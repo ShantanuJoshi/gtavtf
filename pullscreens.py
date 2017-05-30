@@ -59,10 +59,10 @@ def test_screen_grab_methods(lib, duration):
     '''Takes screengrab method and duration then tests
         IF multiple methods exist to find bottlenecks'''
     if lib == "cv2":
-        screen_grab_cv2(duration, flag_verbose)
+        screen_grab(duration)
     if lib == "tf":
-        screen_grab_tf(1, duration, flag_verbose)
-        screen_grab_tf(2, duration, flag_verbose)
+        screen_grab_tf(1, duration)
+        screen_grab_tf(2, duration)
 
 def screen_grab_tf(method, duration):
     '''Takes screenshots for a set duration in seconds, converts to tensor'''
@@ -83,14 +83,15 @@ def screen_grab_tf(method, duration):
             screen.show()
 
         #two methods (1) conver to tensor (2) tf.stack of np.array
-        if(method == 1):
+        if method == 1:
             #I think conver to tensor uses tf stack in implementation see documentation there
             tensored_screen = tf.convert_to_tensor(np.array(screen))
         else:
             tensored_screen = tf.stack(np.array(screen))
 
 
-        if(flag_verbose): print("Method {}, took {} seconds".format(method, time.time()-last_time))
+        if flag_verbose:
+            print("Method {}, took {} seconds".format(method, time.time()-last_time))
         first_loop = False
         num_frames += 1
         last_time = time.time()
@@ -99,7 +100,7 @@ def screen_grab_tf(method, duration):
 
 def main():
     '''Main function, takes flag_verbose flag'''
-    test_screen_grab_methods("cv2", 1)
+    test_screen_grab_methods("tf", 1)
 
 
 if __name__ == "__main__":
